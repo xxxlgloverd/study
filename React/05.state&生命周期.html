@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    //普通写法
+    // function clock(){
+    //     const element = (<div>
+    //         <h1>Hello,world</h1>
+    //         <h2>It is {new Date().toLocaleTimeString()}</h2>
+    //         </div>
+    //     )
+    //     ReactDOM.render=(element,document.getElementById("root"))
+    // }
+    // setInterval(clock,1000) //计时器
+    //组件写法
+    // function Clock(props){
+    //     return (
+    //         <div>
+    //           <h1>Hello,world</h1>
+    //           <h2>It is {Props.date.toLocaleTimeString()}</h2>    
+    //         </div>
+    //     )
+    // }
+    // function tick(){
+    //     ReactDOM.render=(
+    //         <Clock date={new Date}/>,
+    //         document.getElementById('root')
+
+    //     )
+    // }
+    // setInterval(tick,1000)
+    //组件class 写法
+    // const root = ReactDOM.createRoot(document.getElementById('root'))
+    // class Clock extends React.Component {
+    //    render(){
+    //     return(
+    //         <div>
+    //           <h1>Hello world</h1>
+    //           <h2>{this.props.date.toLocaleTimeString()}</h2>
+    //         </div>
+    //     )
+    //    }
+    // }
+    // function tick(){
+    //     root.render(<Clock date={new Date()}/>)
+    // }
+    // setInterval(tick,1000)
+    //用state来更改props里面的值（正常props中的值是不能更改的）
+    //实现思路就是需要在class里面设置state
+    // class Clock extends React.Component{
+    //     constructor(props){
+    //         super(props)
+    //         this.state={date:new Date()}
+    //     }
+    //     componentDidMount(){
+    //         this.timeId=setInterval(()=>this.tick(),1000)
+    //     }
+    //     componentWillUnMount(){
+    //         clearInterval(this.timeId)
+    //     }
+    //     tick(){
+    //         this.setState({
+    //             date:new Date()
+    //         })
+    //     }
+    //     reder(){
+    //         return (
+    //             <div>
+    //                 <h1>Hello World</h1>
+    //                 <h2>It is {this.state.date.toLocaleTimeString()}</h2>
+    //             </div>    
+    //         )
+    //     }
+    // }
+    // const root = ReactDOM.createRoot(document.getElementById('root'))
+    // root.render(<Clock/>)
+    //数据流自上而下
+    function FormatDate(props){
+        return <h2>It is {props.date.toLocaleTimeString()}</h2>
+    }
+    class Clock extends React.Component{
+        constructor(props){
+            super(props)
+            this.state={date:new Date()}
+        }
+        componentDidMount(){
+            this.timeIds=setInterval(()=>this.tick(),1000)
+        }
+        componentWillUnmount(){
+            clearInterval(this.timeIds)
+        }
+        tick(){
+            //更新state里面的值只能用SetState
+            this.setState({date:new Date()})
+        }
+        render(){
+            return (
+                <div>
+                   <h1>Hello world</h1>
+                   <FormatDate date={this.state.date} />    
+                </div>
+            )
+        }
+    }
+    //组件间独立存在
+    function App(){
+        return (
+            <div>
+                <Clock/>
+                <Clock/>
+                <Clock/>
+            </div>   
+        )
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(<Clock/>)
+</script>
+</html>

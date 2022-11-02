@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    //实现一个开关按钮组件
+    class Toggle extends React.Component{
+        constructor(props){
+            supper(props)
+            this.state = {isToggle:true}
+            //此处band传递当前组件属性，不穿(this就是undefined)
+            this.handleClick=this.handleClick.bind(this)
+        }
+        handleClick(){
+            this.setState(prevState =>({
+                isToggle:!prevState.isToggle
+            }))
+        }
+        render(){
+            return (
+                <button onClick={this.handleClick}>{this.state.isToggle?'ON':'OFF'}</button>
+            )
+        }    
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(<Toggle/>)
+
+</script>
+</html>

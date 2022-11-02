@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    class LoginControl extends React.Component{
+        constructor(props){
+            super(props)
+            this.state={isLogin:false}
+            this.handleLogin=this.handleLogin.bind(this)
+            this.handleLoginOut=this.handleLoginOut.bind(this)
+        }
+        handleLogin(){
+            this.setState({isLogin:true})
+        }
+        handleLoginOut(){
+            this.setState({isLogin:false})
+        }
+        render() {
+            const isLogin=this.state.isLogin
+            let button=<button onClick={isLogin?handleLoginOut:handleLogin}>{isLogin?'LoginOut':'Login'}</button>
+            return (
+            <div>
+               <Gueenting isLogin={isLogin}/>           
+               {button}
+              </div>
+            )
+        }
+    }
+    function Gueenting(props){
+            if(props.isLogin){
+                return ( <h1>Wellcome back!!</h1>)
+            }else{
+               return ( <h1>Login please~</h1>)
+            }
+      
+    }
+    const root =React.createRoot(document.getElementById('root'))
+    root.render(<LoginControl/>)
+</script>
+</html>
