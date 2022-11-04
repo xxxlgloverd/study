@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom/umd/react-dom.development.js"></script>
+<script>
+    //children
+    // function FancyBorder(props){
+    //     return (
+    //         <div className={'FancyBorder FancyBorder-'+props.color}>
+    //           {props.children}    
+    //         </div>
+    //     )
+    // }
+    // function WelcomeDialog(props){
+    //     return (
+    //         <FancyBorder color="blue">
+    //           <div className="Dialog-title">Welcome</div>
+    //           <div className="Dialog-message">Thanks for you visiting!!</div>  
+    //         </FancyBorder>
+    //     )
+    // }
+    // const root = ReactDOM.createRoot(document.getElementById('root'))
+    // root.render(<WelcomeDialog/>);
+    //插槽概念
+    // function Contacts(){
+    //     return <div className="Contacts"></div>
+    // }
+    // function Chat(){
+    //     return <div className="Chat"></div>
+    // }
+    // function SplitPane(props){
+    //     return (
+    //         <div className="SplitPane">
+    //             <div className="SplitPane-left">{props.left}</div>
+    //             <div className="SplitPane-right">{props.right}</div>
+    //         </div>
+    //     )
+    // }
+    // function App(){
+    //     return (
+    //         <SplitPane left={<Contacts/>} right={<Chat/>} />
+    //     )
+    // }
+    // const root = ReactDOM.createRoot(document.getElementById('root'))
+    // root.render(<App/>)
+    //组合
+    function FancyBorder(props){
+       return (
+        <div className={'FancyBorder FancyBorder-'+props.color}>{props.children}</div>
+       )
+    }
+    function Dialog(props){
+       return (
+        <FancyBorder color="blue">
+            <div className="Dialog-title">{props.title}</div>
+            <div className="Dialog-message">{props.message}</div>
+            {props.children}
+        </FancyBorder>
+       )
+    }
+    class SignUpDialog extends React.Component{
+        constructor(props){
+            super(props)
+            this.state={login:''}
+            this.handleClick=this.handleChick.bind(this)
+            this.handleChange = this.handleChange.bind(this)
+        }
+        handleChick(){
+            alert("welcome,"+this.state.login+"go now!!")
+        }
+        handleChange(event){
+            this.setState({login:event.target.value})
+        }
+        render(){
+            return (
+                <Dialog title={"xxxxtit"} message={"zzzxxmessage"}>
+                    <input value={this.state.login} onChange={this.handleChange} />
+                    <button onClick={this.handleClick} />
+                </Dialog>
+            )
+        }
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(<SignUpDialog/>)
+</script>
+</html>

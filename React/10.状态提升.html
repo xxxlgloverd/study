@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    // function BoiliEvent(props){
+    //     if(props.value>100){
+    //         return <h1>The water is boiling</h1>
+    //     }else{
+    //         return <h1>The water is not boiling</h1>
+    //     }
+    // }
+    // class ComputerInput extends React.Component{
+    //     constructor(props){
+    //         super(props)
+    //         this.state={temp:null}
+    //         this.handleChange=this.handleChange.bind(this)
+    //     }
+    //     handleChange(event){
+    //         this.setState({
+    //             [temp]:event.target.value
+    //         })
+    //     }
+    //     render(){
+    //         return (
+    //             <div>
+    //                 <input type="number" value={this.state.temp} onChange={this.handleChange} />
+    //                 <BoiliEvent />
+    //             </div>
+    //         )
+    //     }
+    // }
+    // const root = ReactDOM.createRoot(document.getElementById('root'))
+    // const temp={}
+    // root.render(<ComputerInput temp={temp}/>)
+
+    const scaleNames ={
+        c:'Celsius',
+        f:'Fashrenheit',
+    }
+    function toCelsius(fahrenheit){
+        return (fahrenheit - 32) * 5 /9;
+    }
+    function toFahernheit(Celsius){
+        return (celsius * 9 / 5) + 32;
+    }
+    function tryConvert(temperature,convert){
+        const input = parseFloat(temperature)
+        if(Number.isNaN(input)){
+            return '';
+        }
+        const output = convert(input);
+        const rounded = Math.round(output * 1000) / 1000;
+        return rounded.toString();
+    }
+    function BoillingVerdict(props){
+        if(props.celsius >= 100){
+            return <p>The water would boil</p>
+        }else{
+            return <p>The water would not boil</p>
+        }
+    }
+    class TemperatureInput extends React.Component {
+        constructor(props){
+            super(props)
+            this.handleChange = this.handleChange.bind(this);
+        }
+        handleChange(e){
+            this.props.onTemperatureChange(e.target.value);
+        }
+        render(){
+        const temperature = this.props.temperature
+        const scale=this.props.scale;
+        return (
+            <fieldset>
+                <legend>Enter temperature in {scaleNames[scale]}</legend>
+                <input value={temperature}></input>
+                </fieldset>
+        )
+        }
+    }
+
+    class Calculator extends React.Component {
+        constructor(props){
+            super(props)
+            this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+            this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+            this.state = {temperature:'',scale:'c'};
+        }
+        handleCelsiusChange(temperature){
+            this.setState({scale:'c',temperature});
+        }
+        handleFahrenheitChange(temperature){
+            this.setState({scale:'f',temperature})
+        }
+        render(){
+            const scale = this.state.scale
+            const temperature = this.state.temperature
+            const celsius = scale ==='f' ?tryConvert(temperature,toCelsius):temperature;
+            const fahrenheit = scale ==='c'?tryConvert(temperature,toFahernheit):temperature
+            return (
+                <div>
+                    <TemperatureInput
+                    scale="c"
+                    temperature ={celsius}
+                    onTemperatureChange={this.handleCelsiusChange}/>
+                    <TemperatureInput
+                    scale="f"
+                    temperature={fahrenheit}
+                    onTemperatureChange={this.handleFahrenheitChange}/>
+                    <BoillingVerdict celsius={parseFloat(celsius)}/>
+                </div>
+            )
+        }
+    }
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(<Calculator/>)
+</script>
+</html>
