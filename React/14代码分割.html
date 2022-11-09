@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    //代码分割的好处——对你的应用进行代码分割能够帮助你“懒加载”当前用户所需要的内容，能够显著地提高你的应用性能。尽管并没有减少应用整体的代码体积，但你可以避免加载用户永远不需要的代码，并在初始加载的时候减少所需加载的代码量。
+
+    //React.lazy
+    import React, { Suspense } from 'react'
+    import MyErrorBoundary from "./MyErrorBoundary"
+    const OtherComponent= React.lazy(()=>import('./OtherComponent'))
+    const MyComponent =()=>(
+        <div>
+            <MyErrorBoundary>
+                <Suspense fallback={<div>loading....</div>}></Suspense>   
+                <section><OtherComponent/></section>     
+            </MyErrorBoundary>
+        </div>
+    )
+    //React.lazy 和 React Router
+    //React.lazy ,引用 export.defalut
+    import React,{Suspense,lazy} from 'react'
+    import { BrowserRouter as Router,Route,Switch } from 'react-router-dom'
+
+    const Home = lazy(()=>import('./home'))
+    const About = lazy(()=>import('./about'))
+
+    const App =()=>{
+        <Router>
+            <Suspense fallback={<div>loading ...</div>}></Suspense> 
+            <Switch>
+                <Route path="/" component={Home}/>
+                <Route path="/about" component={About}/>    
+            </Switch>   
+        </Router>
+    }
+    
+    const root=ReactDOM(document.getElementById('root'))
+    root.render()
+</script>
+</html>

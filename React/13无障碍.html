@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script>
+    //aria jsx无障碍属性
+    function ListItem(props){
+        return(
+            <dl>{
+                props.item.map(item=>{
+                <Fragment key={item.id}>
+                   <dt>{item.term}</dt>
+                   <dd>{item.description}</dd>    
+                </Fragment>
+            })
+            }</dl>
+        )
+    }
+    //组件获取Dom 实现操作Dom
+    class TextInput extends React.Component{
+       constructor(props){
+        super(props)
+        this.textRef = React.createRef()
+       }
+       render(){
+        return(
+            <input type="text" ref={this.textRef}></input>
+        )
+       }
+    //    this.textRef.current.focus()
+    }
+    //鼠标、键盘 onBlur onFocus()
+    class BlurExample extends React.Component{
+        constructor(props){
+            super(props)
+            this.state = {isOpen:false}
+            this.onClickHandler = this.onClickHandler.bind(this)
+            this.onBlurHandler = this.onBlurHandler.bind(this)
+            this.onFocusHandler = this.onDocusHandler.bind(this)
+        }
+        onClickHandler(){
+            this.setState(cur=>{
+                isOpen:!cur.isOpen
+            })
+        }
+        onBlurHandler(){
+            this.timeId=setTimeout(()=>{
+               this.setState({
+                isOpen:false
+               })
+            })
+        }
+        onFocusHandler(){
+            clearTimeout(this.timeId)
+        }
+        render(){
+            return (
+                <div onBlur={this.onBlurHandler} onFocus={this.onFocusHandler}>
+                    <button onClick={this.onClickHandler} aria-haspopup="true" aria-expanded={this.state.isOpen}>click on!</button>
+                   {this.state.isOpen && (<ul><li>Option 1</li><li>Option 2</li><li>Option 3</li></ul>)}
+                </div>
+            )
+        }
+    }
+
+    const root =ReactDOM.createRoot('root')
+    root.render()
+</script>
+</html>
