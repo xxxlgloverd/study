@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 
-export const AddKanbanCard = ({ onSubmit }) => {
+export default function AddKanbanCard({ onSubmit }) {
   const [title, setTitle] = useState("");
   const handleChange = (evt) => {
     setTitle(evt.target.value);
   };
   const handleKeyDown = (evt) => {
-    if (evt.key === "Enter")
-      onSubmit(title);
+    if (evt.key === "Enter") {
+      const newCard = { title, status: new Date()+'' };
+      onSubmit(newCard);
+    }
   };
   const inputElem = useRef(null);
   useEffect(() => {
@@ -27,4 +29,4 @@ export const AddKanbanCard = ({ onSubmit }) => {
       </div>
     </li>
   );
-};
+}
